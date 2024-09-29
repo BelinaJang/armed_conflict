@@ -10,5 +10,8 @@ dummy_data <- filtered_disaster %>% mutate(Earthquake=ifelse(Disaster.Type=="Ear
 
 cleaned_disaster <- dummy_data %>% group_by(Year, ISO) %>%
   # 1 if it happened at least once
-  summarise(Earthquake=max(Earthquake),Drought=max(Drought))
+  summarise(Earthquake=max(Earthquake),Drought=max(Drought)) %>%
+  ungroup()
+
+write.csv(cleaned_disaster, file = here("data", "analytical", "cleaned_disaster.csv"), row.names = FALSE)
 
