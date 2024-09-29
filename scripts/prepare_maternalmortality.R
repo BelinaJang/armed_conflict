@@ -36,6 +36,6 @@ combined_data <- reduce(new_data,full_join)
 combined_data$ISO <- countrycode(combined_data$Country.Name,
                             origin = "country.name",
                             destination = "iso3c")
-finaldata <- finaldata %>% select(-Country.Name)
+finaldata <- combined_data %>% select(-Country.Name)
 
 write.csv(combined_data, file = here("data", "analytical", "finaldata.csv"), row.names = FALSE)
