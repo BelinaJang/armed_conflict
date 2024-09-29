@@ -1,6 +1,6 @@
 library(here)
 library(tidyverse)
-rawdat <-read.csv(here("original","Disaster.csv"), header = TRUE)
+rawdat <-read.csv(here("data/original","Disaster.csv"), header = TRUE)
 
 filtered_data <- rawdat %>% filter(Year %in% c(2000:2019)) %>%
   filter(Disaster.Type %in% c("Earthquake","Drought")) %>%
