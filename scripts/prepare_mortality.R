@@ -28,14 +28,12 @@ for (name in data_names) {
   assign(paste0("new_",name), my_function(data, name))
 }
 
-new_data <- list(new_mat,new_inf,new_neo,new_under5)
-
 # joining 4 tables
-combined_data <- reduce(new_data,full_join)
+cleaned_mortality <- reduce(list(new_mat,new_inf,new_neo,new_under5),full_join)
 
-combined_data$ISO <- countrycode(combined_data$Country.Name,
+cleaned_mortality$ISO <- countrycode(cleaned_mortality$Country.Name,
                             origin = "country.name",
                             destination = "iso3c")
-combined_data <- combined_data %>% select(-Country.Name)
+cleaned_mortality <- cleaned_mortality %>% select(-Country.Name)
 
-write.csv(combined_data, file = here("data", "analytical", "combined_mortality.csv"), row.names = FALSE)
+write.csv(cleaned_mortality, file = here("data", "analytical", "combined_mortality.csv"), row.names = FALSE)
