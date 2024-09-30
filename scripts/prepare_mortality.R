@@ -36,4 +36,4 @@ cleaned_mortality$ISO <- countrycode(cleaned_mortality$Country.Name,
                             destination = "iso3c")
 cleaned_mortality <- cleaned_mortality %>% select(-Country.Name)
 
-write.csv(cleaned_mortality, file = here("data", "analytical", "combined_mortality.csv"), row.names = FALSE)
+write.csv(cleaned_mortality, file = here("data", "analytical", "cleaned_mortality.csv"), row.names = FALSE)
