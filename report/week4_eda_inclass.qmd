@@ -1,0 +1,126 @@
+---
+title: "CHL8010: Statistical Programming and Computation in Health Data"
+author: "Belina"
+date: "2024-09-30"
+#documentclass: article
+format: html
+---
+
+```{r echo=FALSE}
+library(tidyverse)
+library(here)
+```
+
+## Exploratory data analysis
+
+```{r}
+# load the data
+final_data <- read.csv(here("data/analytical", "final_data.csv"), header = TRUE)
+```
+
+```{r}
+glimpse(final_data)
+```
+
+```{r}
+summary(final_data)
+```
+
+```{r}
+Mor_names <- c("matMor","infMor","neoMor","under5Mor")
+
+for (Mor in Mor_names){
+  plot <- final_data %>% ggplot(aes(Year,.data[[Mor]], color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = Mor_names,
+      color = "Armed Conflict"
+    ) +
+    theme_minimal() 
+  print(plot)
+}
+
+```
+
+```{r}
+final_data %>% ggplot(aes(Year,log(totaldeath+1), color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = "log(Total Death)",
+      color = "Armed Conflict"
+    ) + theme_minimal()
+```
+
+### Investigate Final Data without countries with 3 highest total death counts for each year.
+
+```{r}
+highest_totaldeath <- final_data %>% 
+  group_by(Year) %>%
+  slice_max(totaldeath, n = 3)
+
+highest_totaldeath %>% select(country_name,Year, totaldeath)
+
+finaldata_without3highest <- anti_join(final_data,highest_totaldeath, by=c("country_name","Year"))
+
+head(finaldata_without3highest)
+```
+
+```{r}
+Mor_names <- c("matMor","infMor","neoMor","under5Mor")
+
+for (Mor in Mor_names){
+  plot <- finaldata_without3highest %>% ggplot(aes(Year,.data[[Mor]], color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = Mor_names,
+      color = "Armed Conflict"
+    ) +
+    theme_minimal() 
+  print(plot)
+}
+```
+
+```{r}
+finaldata_without3highest %>% ggplot(aes(Year,log(totaldeath+1), color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = "log(Total Death)",
+      color = "Armed Conflict"
+    ) + theme_minimal()
+```
+```{r}
+oecd_countries <- final_data %>%
+  filter(OECD==1)
+
+oecd_conflict <- oecd_countries %>% filter(armed_conflict==1)
+
+Mor_names <- c("matMor","infMor","neoMor","under5Mor")
+
+for (Mor in Mor_names){
+  plot <- oecd_countries %>% ggplot(aes(Year,.data[[Mor]], color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = Mor_names,
+      color = "Armed Conflict"
+    ) +
+    theme_minimal() 
+  print(plot)
+}
+```
+```{r}
+oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))) +
+    geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict), method = "loess") +
+    labs(
+      x = "Year",
+      y = "Total Death",
+      color = "Armed Conflict"
+    ) + theme_minimal()
+```
+
+## Summary
+
