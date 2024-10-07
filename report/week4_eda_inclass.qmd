@@ -14,9 +14,11 @@ library(tidyverse)
 library(here)
 ```
 
-## Exploratory data analysis
+# Exploratory data analysis
 
-```{r}
+## Analysis of final data
+
+```{r echo=FALSE}
 # load the data
 final_data <- read.csv(here("data/analytical", "final_data.csv"), header = TRUE)
 ```
@@ -32,18 +34,22 @@ summary(final_data)
 ```{r}
 Mor_names <- c("matMor","infMor","neoMor","under5Mor")
 
-for (Mor in Mor_names){
+for (i in seq_along(Mor_names)){
+  Mor <- Mor_names[i]
   plot <- final_data %>% ggplot(aes(Year,.data[[Mor]], 
                                     color=factor(armed_conflict))) +
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = "Trends in Mortality Rates by Year",
+      title = paste("Table",i,"Trends in Mortality Rates by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
     ) +
-    theme_minimal() 
+    theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
   print(plot)
 }
 
@@ -54,14 +60,17 @@ final_data %>% ggplot(aes(Year,log(totaldeath+1), color=factor(armed_conflict)))
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), 
                                                  method = "loess") +
     labs(
-      title = "Logarithmic Trends in Total Deaths by Year",
+      title = "Table 5 Logarithmic Trends in Total Deaths by Year",
       x = "Year",
       y = "log(Total Death)",
       color = "Armed Conflict"
-    ) + theme_minimal()
+    ) + theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
 ```
 
-### Investigate Final Data without countries with 3 highest total death counts for each year.
+## Investigate Final Data without countries with 3 highest total death counts for each year.
 
 ```{r}
 highest_totaldeath <- final_data %>% 
@@ -79,18 +88,22 @@ head(finaldata_without3highest)
 ```{r}
 Mor_names <- c("matMor","infMor","neoMor","under5Mor")
 
-for (Mor in Mor_names){
+for (i in seq_along(Mor_names)){
+  Mor <- Mor_names[i]
   plot <- finaldata_without3highest %>% ggplot(aes(Year,.data[[Mor]],
                                                    color=factor(armed_conflict))) +
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year",
+      title = paste("Table", i+5, "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
     ) +
-    theme_minimal() 
+    theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
   print(plot)
 }
 ```
@@ -101,46 +114,105 @@ finaldata_without3highest %>% ggplot(aes(Year,log(totaldeath+1),
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = "Logarithmic Trends in Total Deaths Excluding Countries with the Three Highest Death Counts by Year",
+      title = str_wrap("Table 10 Logarithmic Trends in Total Deaths Excluding Countries with the Three Highest Death Counts by Year"),
       x = "Year",
       y = "log(Total Death)",
       color = "Armed Conflict"
-    ) + theme_minimal()
+    ) + theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
 ```
+## Investigate OCED countries only
+
 ```{r}
 oecd_countries <- final_data %>%
   filter(OECD==1)
 
-oecd_conflict <- oecd_countries %>% filter(armed_conflict==1)
-
 Mor_names <- c("matMor","infMor","neoMor","under5Mor")
 
-for (Mor in Mor_names){
+for (i in seq_along(Mor_names)){
+  Mor <- Mor_names[i]
   plot <- oecd_countries %>% ggplot(aes(Year,.data[[Mor]],
                                         color=factor(armed_conflict))) +
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = "Trends in Mortality Rates in OECD Countries by Year",
+      title = paste("Table",i+10, "Trends in Mortality Rates in OECD Countries by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
     ) +
-    theme_minimal() 
+    theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
   print(plot)
 }
 ```
+
 ```{r}
 oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))) +
     geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict),
                                                 method = "loess") +
     labs(
-      title = "Trends in Total Deaths in OECD Countries by Year",
+      title = "Table 15 Trends in Total Deaths in OECD Countries by Year",
       x = "Year",
       y = "Total Death",
       color = "Armed Conflict"
-    ) + theme_minimal()
+    ) + theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
+```
+
+## Investigate non OCED countries only
+
+```{r}
+non_oecd_countries <- final_data %>%
+  filter(OECD==0)
+
+Mor_names <- c("matMor","infMor","neoMor","under5Mor")
+
+for (i in seq_along(Mor_names)){
+  Mor <- Mor_names[i]
+  plot <- non_oecd_countries %>% ggplot(aes(Year,.data[[Mor]],
+                                        color=factor(armed_conflict))) +
+    geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
+                                                 method = "loess") +
+    labs(
+      title = paste("Table", i+15, "Trends in Mortality Rates in non OECD Countries by Year"),
+      x = "Year",
+      y = Mor_names,
+      color = "Armed Conflict"
+    ) +
+    theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
+  print(plot)
+}
+```
+
+```{r}
+non_oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))) +
+    geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict),
+                                                method = "loess") +
+    labs(
+      title = "Table 20 Trends in Total Deaths in non OECD Countries by Year",
+      x = "Year",
+      y = "Total Death",
+      color = "Armed Conflict"
+    ) + theme_minimal() +
+  theme(
+    text = element_text(size=8)
+  )
 ```
 
 ## Summary
 
+Final data: From Table 1-4, we can see that all 4 mortality rates seemed to decrease over the years, and that countries with armed conflict seemed to have higher rates compared to countries without armed conflict. From table 5, we can see that countries with armed conflicts have higher total death counts compared to the countries without armed conflicts. Table 5 shows a clearer distinction between two groups.
+
+Filtered data: I excluded countries with 3 highest total death counts for each year, then repeated the same process for the Table 1-5. Table 6-10 doesn't seem very different from Table 1-5.
+
+OECD vs non OECD countries: While all 4 mortality rates seem to decrease over the years in both groups, OECD countries seem to have much lower mortality rates regardless of the presence of armed conflicts.
