@@ -181,7 +181,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = paste("Table", i+15, "Trends in Mortality Rates in non OECD Countries by Year"),
+      title = paste("Table", i+15, "Trends in Mortality Rates in non-OECD Countries by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
@@ -199,7 +199,7 @@ non_oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))
     geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict),
                                                 method = "loess") +
     labs(
-      title = "Table 20 Trends in Total Deaths in non OECD Countries by Year",
+      title = "Table 20 Trends in Total Deaths in non-OECD Countries by Year",
       x = "Year",
       y = "Total Death",
       color = "Armed Conflict"
@@ -211,8 +211,8 @@ non_oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))
 
 ## Summary
 
-Final data: From Table 1-4, we can see that all 4 mortality rates seemed to decrease over the years, and that countries with armed conflict seemed to have higher rates compared to countries without armed conflict. From table 5, we can see that countries with armed conflicts have higher total death counts compared to the countries without armed conflicts. Table 5 shows a clearer distinction between two groups.
+Final data: From Tables 1-4, we can see that all four mortality rates seemed to decrease over the years and that countries with armed conflict appeared to have higher rates compared to countries without armed conflict. From Table 5, we can see that countries with armed conflicts have higher total death counts compared to countries without armed conflicts. Table 5 shows a clearer distinction between the two groups.
 
-Filtered data: I excluded countries with 3 highest total death counts for each year, then repeated the same process for the Table 1-5. Table 6-10 doesn't seem very different from Table 1-5.
+Filtered data: I excluded the three countries with the highest total death counts for each year and then repeated the same process for Tables 1-5. Tables 6-10 don’t seem very different from Tables 1-5.
 
-OECD vs non OECD countries: While all 4 mortality rates seem to decrease over the years in both groups, OECD countries seem to have much lower mortality rates regardless of the presence of armed conflicts.
+OECD vs. non-OECD countries: While all four mortality rates seem to decrease over the years in both groups, OECD countries appear to have much lower mortality rates regardless of the presence of armed conflicts.
