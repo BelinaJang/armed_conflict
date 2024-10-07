@@ -95,7 +95,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = paste("Table", i+5, "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year"),
+      title = str_wrap(paste("Table", i+5, "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year")),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
