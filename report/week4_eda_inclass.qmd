@@ -41,7 +41,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = paste("Table",i,"Trends in Mortality Rates by Year"),
+      title = paste("Graph",i,"Trends in Mortality Rates by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
@@ -60,7 +60,7 @@ final_data %>% ggplot(aes(Year,log(totaldeath+1), color=factor(armed_conflict)))
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict), 
                                                  method = "loess") +
     labs(
-      title = "Table 5 Logarithmic Trends in Total Deaths by Year",
+      title = "Graph 5 Logarithmic Trends in Total Deaths by Year",
       x = "Year",
       y = "log(Total Death)",
       color = "Armed Conflict"
@@ -95,7 +95,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = str_wrap(paste("Table", i+5, "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year")),
+      title = str_wrap(paste("Graph", i+5, "Trends in Mortality Rates Excluding Countries with the Three Highest Total Death Counts by Year")),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
@@ -114,7 +114,7 @@ finaldata_without3highest %>% ggplot(aes(Year,log(totaldeath+1),
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = str_wrap("Table 10 Logarithmic Trends in Total Deaths Excluding Countries with the Three Highest Death Counts by Year"),
+      title = str_wrap("Graph 10 Logarithmic Trends in Total Deaths Excluding Countries with the Three Highest Death Counts by Year"),
       x = "Year",
       y = "log(Total Death)",
       color = "Armed Conflict"
@@ -138,7 +138,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = paste("Table",i+10, "Trends in Mortality Rates in OECD Countries by Year"),
+      title = paste("Graph",i+10, "Trends in Mortality Rates in OECD Countries by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
@@ -156,7 +156,7 @@ oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))) +
     geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict),
                                                 method = "loess") +
     labs(
-      title = "Table 15 Trends in Total Deaths in OECD Countries by Year",
+      title = "Graph 15 Trends in Total Deaths in OECD Countries by Year",
       x = "Year",
       y = "Total Death",
       color = "Armed Conflict"
@@ -181,7 +181,7 @@ for (i in seq_along(Mor_names)){
     geom_point(alpha=0.15, size=2) + geom_smooth(aes(group = armed_conflict),
                                                  method = "loess") +
     labs(
-      title = paste("Table", i+15, "Trends in Mortality Rates in non-OECD Countries by Year"),
+      title = paste("Graph", i+15, "Trends in Mortality Rates in non-OECD Countries by Year"),
       x = "Year",
       y = Mor_names,
       color = "Armed Conflict"
@@ -199,7 +199,7 @@ non_oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))
     geom_point(alpha=0.3, size=2) + geom_smooth(aes(group = armed_conflict),
                                                 method = "loess") +
     labs(
-      title = "Table 20 Trends in Total Deaths in non-OECD Countries by Year",
+      title = "Graph 20 Trends in Total Deaths in non-OECD Countries by Year",
       x = "Year",
       y = "Total Death",
       color = "Armed Conflict"
@@ -211,8 +211,8 @@ non_oecd_countries %>% ggplot(aes(Year,totaldeath, color=factor(armed_conflict))
 
 ## Summary
 
-Final data: From Tables 1-4, we can see that all four mortality rates seemed to decrease over the years and that countries with armed conflict appeared to have higher rates compared to countries without armed conflict. From Table 5, we can see that countries with armed conflicts have higher total death counts compared to countries without armed conflicts. Table 5 shows a clearer distinction between the two groups.
+Final data: From Graphs 1-4, we can see that all four mortality rates seemed to decrease over the years and that countries with armed conflict appeared to have higher rates compared to countries without armed conflict. From Graph 5, we can see that countries with armed conflicts have higher total death counts compared to countries without armed conflicts. Graph 5 shows a clearer distinction between the two groups.
 
-Filtered data: I excluded the three countries with the highest total death counts for each year and then repeated the same process for Tables 1-5. Tables 6-10 don’t seem very different from Tables 1-5.
+Filtered data: I excluded the three countries with the highest total death counts for each year and then repeated the same process for Graphs 1-5. Graphs 6-10 don’t seem very different from Graphs 1-5.
 
 OECD vs. non-OECD countries: While all four mortality rates seem to decrease over the years in both groups, OECD countries appear to have much lower mortality rates regardless of the presence of armed conflicts.
