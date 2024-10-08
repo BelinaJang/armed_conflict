@@ -92,5 +92,6 @@ filtered_data %>% ggplot(aes(x=Year, y=matMor, color=factor(country_name))) +
     y = "Maternal Mortality Rate",
     color = "Country"
     ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(text = element_text(size=9))
 ```
