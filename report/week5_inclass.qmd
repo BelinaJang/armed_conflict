@@ -3,6 +3,10 @@ title: "CHL8010: Week 5 In-class Assignment"
 author: "Belina Jang"
 format: pdf
 editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
 ---
 
 ```{r echo=FALSE}
@@ -23,7 +27,6 @@ data_2000 <- final_data %>% filter(Year==2000)
 
 ```{r}
 glimpse(data_2000)
-summary(data_2000$urban)
 ```
 
 ## Table 1 for armed conflict paper
@@ -59,7 +62,8 @@ footnote <- "Data given as count (proportion in %) or median [Min, Max]. <br>
 1No conflict: <25 battle-related deaths per country–conflict–year. <br>
 2Yes conflict: more than 25 battle-related deaths per country–conflict–year."
 
-table1( ~ gdp1000_group + OECD + urban | armed_conflict, data = data_2000,overall=c(Right="Total"), caption=caption, footnote=footnote)
+table1( ~ gdp1000_group + OECD + urban | armed_conflict, data = data_2000,
+        overall=c(Right="Total"), caption=caption, footnote=footnote)
 ```
 
 ## Descriptive figure
@@ -70,7 +74,8 @@ mat_data <- final_data %>% group_by(ISO) %>%
   filter(Year %in% c(2000,2017)) %>% select(ISO, Year, matMor)
 
 # make it wide table, rename 2000 -> X2000, 2017 -> X2017
-mat_data_wide <- mat_data %>% pivot_wider(names_from = Year, values_from = matMor) %>% rename(X2000 = `2000`, X2017 = `2017`)
+mat_data_wide <- mat_data %>% pivot_wider(names_from = Year, values_from = matMor) %>% 
+  rename(X2000 = `2000`, X2017 = `2017`)
 
 ISO_list <- mat_data_wide %>% mutate(diff = X2017 - X2000) %>%
   filter(diff > 0) %>% select(ISO) %>% pull()
