@@ -1,0 +1,90 @@
+---
+title: "CHL8010: Week 5 In-class Assignment"
+author: "Belina Jang"
+format: pdf
+editor: visual
+---
+
+```{r echo=FALSE}
+library(tidyverse)
+library(here)
+library(texreg)
+library(multgee)
+library(table1)
+```
+
+## Analysis of final data
+
+```{r echo=FALSE}
+# load the data
+final_data <- read.csv(here("data/analytical", "final_data.csv"), header = TRUE)
+data_2000 <- final_data %>% filter(Year==2000)
+```
+
+```{r}
+glimpse(data_2000)
+summary(data_2000$urban)
+```
+
+## Table 1 for armed conflict paper
+```{R}
+data_2000$armed_conflict <- 
+  factor(data_2000$armed_conflict, levels=c(0,1),
+         labels=c("No conflict", 
+                  "Yes conflict"))
+
+# covariate
+data_2000$OECD <- 
+  factor(data_2000$OECD, levels=c(0,1),
+         labels=c("non-OECD Member", 
+                  "OECD Member"))
+
+data_2000$gdp1000_group <- cut(
+  data_2000$gdp1000, 
+  breaks = c(-Inf, 1.2383, 4.0719, 13.1531, Inf),
+  labels = c("Very Low GDP", "Low GDP", "Medium GDP", "High GDP"),
+  right = FALSE  # left-closed intervals
+)
+
+label(data_2000$armed_conflict)       <- "Armed conflict"
+label(data_2000$OECD)       <- "OECD"
+label(data_2000$gdp1000_group)       <- "GDP"
+label(data_2000$urban) <- "Urban residence"
+
+```
+
+```{r}
+caption  <- "Table 1. Description of data used in the study."
+footnote <- "Data given as count (proportion in %) or median [Min, Max]. <br>
+1No conflict: <25 battle-related deaths per country–conflict–year. <br>
+2Yes conflict: more than 25 battle-related deaths per country–conflict–year."
+
+table1( ~ gdp1000_group + OECD + urban | armed_conflict, data = data_2000,overall=c(Right="Total"), caption=caption, footnote=footnote)
+```
+
+## Descriptive figure
+Write a Quarto script that creates a figure that shows the trend in maternal mortality
+for countries that had an increase from 2000 to 2017.
+```{r}
+mat_data <- final_data %>% group_by(ISO) %>%
+  filter(Year %in% c(2000,2017)) %>% select(ISO, Year, matMor)
+
+# make it wide table, rename 2000 -> X2000, 2017 -> X2017
+mat_data_wide <- mat_data %>% pivot_wider(names_from = Year, values_from = matMor) %>% rename(X2000 = `2000`, X2017 = `2017`)
+
+ISO_list <- mat_data_wide %>% mutate(diff = X2017 - X2000) %>%
+  filter(diff > 0) %>% select(ISO) %>% pull()
+```
+
+```{r}
+filtered_data <- final_data %>% filter(ISO %in% ISO_list)
+
+filtered_data %>% ggplot(aes(x=Year, y=matMor, color=factor(country_name))) +
+  geom_line() +
+  labs(
+    title = paste("Graph 1 Trends in Mortality Rates by Year"),
+    x = "Year",
+    y = "Maternal Mortality Rate",
+    color = "Country"
+    )
+```
