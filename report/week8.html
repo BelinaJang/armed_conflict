@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>week8</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="week8_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week8_files/libs/quarto-html/quarto.js"></script>
+<script src="week8_files/libs/quarto-html/popper.min.js"></script>
+<script src="week8_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="week8_files/libs/quarto-html/anchor.min.js"></script>
+<link href="week8_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week8_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="week8_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="week8_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="week8_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">week8</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> final_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country_name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Canada"</span>,<span class="st">"United States"</span>, <span class="st">"Japan"</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(matMor<span class="sc">~</span>ISO<span class="sc">+</span>Earthquake, <span class="at">data=</span>data)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(matMor<span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">+</span>ISO<span class="sc">+</span>Earthquake, <span class="at">data=</span>data)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">screenreg</span>(<span class="fu">list</span>(mod1, mod2), <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"Model 1"</span>, <span class="st">"Model 2"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=================================
+             Model 1    Model 2  
+---------------------------------
+(Intercept)  10.67 ***           
+             (0.35)              
+ISOJPN       -4.27 ***   6.39 ***
+             (0.60)     (0.49)   
+ISOUSA        4.30 ***  14.96 ***
+             (0.55)     (0.42)   
+Earthquake   -0.17      -0.17    
+             (0.51)     (0.51)   
+ISOCAN                  10.67 ***
+                        (0.35)   
+---------------------------------
+R^2           0.86       0.98    
+Adj. R^2      0.85       0.98    
+Num. obs.    54         54       
+=================================
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>final_data<span class="sc">$</span>pctpopdens <span class="ot">&lt;-</span> final_data<span class="sc">$</span>popdens<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lmmod <span class="ot">&lt;-</span> <span class="fu">lm</span>(matMor <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> armed_conflict <span class="sc">+</span> gdp1000 <span class="sc">+</span> OECD <span class="sc">+</span> pctpopdens <span class="sc">+</span> urban <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>              agedep <span class="sc">+</span> male_edu <span class="sc">+</span> temp <span class="sc">+</span> rainfall1000 <span class="sc">+</span> Earthquake <span class="sc">+</span> Drought <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>              ISO, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> final_data)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(matMor <span class="sc">~</span> armed_conflict <span class="sc">+</span> gdp1000 <span class="sc">+</span> OECD <span class="sc">+</span> pctpopdens <span class="sc">+</span> urban <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                agedep <span class="sc">+</span> male_edu <span class="sc">+</span> temp <span class="sc">+</span> rainfall1000 <span class="sc">+</span> Earthquake <span class="sc">+</span> Drought,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>), <span class="at">model =</span> <span class="st">"within"</span>, <span class="at">data =</span> final_data)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">screenreg</span>(<span class="fu">list</span>(lmmod, plmmod), <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"LM"</span>, <span class="st">"PLM"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+========================================
+                LM           PLM        
+----------------------------------------
+armed_conflict    39.54 ***    39.54 ***
+                  (4.40)       (4.40)   
+gdp1000            2.00 ***     2.00 ***
+                  (0.22)       (0.22)   
+OECD              17.55        17.55    
+                 (15.37)      (15.37)   
+pctpopdens       -57.12       -57.12    
+                 (37.66)      (37.66)   
+urban             -7.63 ***    -7.63 ***
+                  (0.97)       (0.97)   
+agedep             0.11         0.11    
+                  (0.31)       (0.31)   
+male_edu         -63.45 ***   -63.45 ***
+                  (3.29)       (3.29)   
+temp              10.57 ***    10.57 ***
+                  (3.02)       (3.02)   
+rainfall1000      -7.91        -7.91    
+                  (5.99)       (5.99)   
+Earthquake         5.45         5.45    
+                  (4.63)       (4.63)   
+Drought           -0.21        -0.21    
+                  (4.12)       (4.12)   
+ISOAFG          1163.91 ***             
+                 (53.27)                
+ISOAGO           797.25 ***             
+                 (75.68)                
+ISOALB           745.17 ***             
+                 (53.88)                
+ISOARE           287.80 ***             
+                 (82.80)                
+ISOARG           905.27 ***             
+                 (69.44)                
+ISOARM           994.21 ***             
+                 (49.30)                
+ISOATG           624.77 ***             
+                 (83.97)                
+ISOAUS           969.63 ***             
+                 (73.94)                
+ISOAUT           816.93 ***             
+                 (48.64)                
+ISOAZE           796.31 ***             
+                 (52.97)                
+ISOBDI           789.85 ***             
+                 (69.45)                
+ISOBEL           980.84 ***             
+                 (60.56)                
+ISOBEN           649.05 ***             
+                 (89.46)                
+ISOBFA           349.49 ***             
+                 (90.72)                
+ISOBGD           615.18 ***             
+                 (84.19)                
+ISOBGR           737.92 ***             
+                 (50.96)                
+ISOBHR           607.07 ***             
+                 (95.90)                
+ISOBHS           720.09 ***             
+                 (79.73)                
+ISOBIH           632.98 ***             
+                 (48.39)                
+ISOBLR           948.28 ***             
+                 (47.25)                
+ISOBLZ           513.52 ***             
+                 (85.06)                
+ISOBOL           715.14 ***             
+                 (58.50)                
+ISOBRA           589.28 ***             
+                 (80.13)                
+ISOBRB           841.84 ***             
+                 (88.99)                
+ISOBRN           751.36 ***             
+                 (92.95)                
+ISOBTN           304.12 ***             
+                 (50.05)                
+ISOBWA           539.82 ***             
+                 (70.05)                
+ISOCAF          1188.11 ***             
+                 (81.56)                
+ISOCAN          1138.39 ***             
+                 (58.23)                
+ISOCHE          1021.86 ***             
+                 (54.98)                
+ISOCHL           800.46 ***             
+                 (50.58)                
+ISOCHN           711.31 ***             
+                 (56.39)                
+ISOCMR          1015.63 ***             
+                 (82.92)                
+ISOCOD           939.16 ***             
+                 (79.96)                
+ISOCOG          1168.71 ***             
+                 (84.94)                
+ISOCOL           623.18 ***             
+                 (71.38)                
+ISOCOM           561.28 ***             
+                 (83.09)                
+ISOCPV           118.27                 
+                 (71.84)                
+ISOCRI           762.92 ***             
+                 (83.91)                
+ISOCUB           620.98 ***             
+                 (80.90)                
+ISOCYP           739.23 ***             
+                 (65.53)                
+ISOCZE           875.64 ***             
+                 (48.73)                
+ISODEU          1017.29 ***             
+                 (55.37)                
+ISODJI           624.16 ***             
+                 (91.11)                
+ISODNK           939.49 ***             
+                 (53.19)                
+ISODOM           644.58 ***             
+                 (82.77)                
+ISODZA           567.29 ***             
+                 (61.75)                
+ISOECU           718.96 ***             
+                 (69.16)                
+ISOEGY           968.15 ***             
+                 (89.93)                
+ISOERI           808.17 ***             
+                 (80.44)                
+ISOESP           633.00 ***             
+                 (57.31)                
+ISOEST           985.82 ***             
+                 (48.15)                
+ISOETH           704.04 ***             
+                 (66.80)                
+ISOFIN           728.80 ***             
+                 (45.97)                
+ISOFJI           428.50 ***             
+                 (81.63)                
+ISOFRA           868.83 ***             
+                 (57.10)                
+ISOFSM           540.52 ***             
+                 (82.91)                
+ISOGAB           978.03 ***             
+                 (90.86)                
+ISOGBR          1127.21 ***             
+                 (65.54)                
+ISOGEO           948.59 ***             
+                 (51.36)                
+ISOGHA           816.56 ***             
+                 (87.76)                
+ISOGIN           944.90 ***             
+                 (84.65)                
+ISOGMB           956.41 ***             
+                 (90.33)                
+ISOGNB           988.84 ***             
+                 (87.33)                
+ISOGNQ           697.99 ***             
+                 (81.73)                
+ISOGRC           814.00 ***             
+                 (61.88)                
+ISOGRD           300.95 ***             
+                 (83.80)                
+ISOGTM           465.12 ***             
+                 (74.96)                
+ISOGUY           716.43 ***             
+                 (86.33)                
+ISOHND           241.63 **              
+                 (75.63)                
+ISOHRV           724.35 ***             
+                 (51.61)                
+ISOHTI           842.00 ***             
+                 (83.79)                
+ISOHUN           775.71 ***             
+                 (50.08)                
+ISOIDN           824.93 ***             
+                 (88.91)                
+ISOIND           531.98 ***             
+                 (81.11)                
+ISOIRL           811.03 ***             
+                 (50.90)                
+ISOIRN           363.47 ***             
+                 (52.53)                
+ISOIRQ           600.77 ***             
+                 (76.63)                
+ISOISL           736.89 ***             
+                 (50.16)                
+ISOITA           739.05 ***             
+                 (57.05)                
+ISOJAM           716.01 ***             
+                 (82.47)                
+ISOJOR           866.34 ***             
+                 (70.25)                
+ISOJPN          1139.96 ***             
+                 (73.23)                
+ISOKAZ           792.22 ***             
+                 (44.09)                
+ISOKEN          1013.32 ***             
+                 (74.67)                
+ISOKGZ           886.13 ***             
+                 (45.70)                
+ISOKHM           467.43 ***             
+                 (86.74)                
+ISOKIR           349.54 ***             
+                 (82.09)                
+ISOKOR          1204.05 ***             
+                 (68.73)                
+ISOKWT           761.07 ***             
+                 (89.90)                
+ISOLAO           438.45 ***             
+                 (78.41)                
+ISOLBN           847.45 ***             
+                 (67.60)                
+ISOLBR          1121.70 ***             
+                 (85.93)                
+ISOLBY           672.52 ***             
+                 (72.29)                
+ISOLCA           366.20 ***             
+                 (81.87)                
+ISOLKA           670.55 ***             
+                 (89.55)                
+ISOLSO           885.85 ***             
+                 (50.59)                
+ISOLTU           885.62 ***             
+                 (48.45)                
+ISOLUX           765.26 ***             
+                 (52.41)                
+ISOLVA           963.82 ***             
+                 (47.84)                
+ISOMAR           521.22 ***             
+                 (63.54)                
+ISOMDA           811.50 ***             
+                 (49.29)                
+ISOMDG           706.69 ***             
+                 (71.69)                
+ISOMDV           269.78 ***             
+                 (44.53)                
+ISOMEX           665.55 ***             
+                 (74.22)                
+ISOMKD           683.50 ***             
+                 (49.27)                
+ISOMLI           630.61 ***             
+                 (90.60)                
+ISOMLT          1083.74 ***             
+                 (85.69)                
+ISOMMR           469.11 ***             
+                 (80.99)                
+ISOMNE           698.08 ***             
+                 (55.76)                
+ISOMNG           807.95 ***             
+                 (39.91)                
+ISOMOZ           587.19 ***             
+                 (78.47)                
+ISOMRT          1022.99 ***             
+                 (90.13)                
+ISOMUS           747.20 ***             
+                 (80.90)                
+ISOMWI           850.67 ***             
+                 (76.16)                
+ISOMYS           670.16 ***             
+                 (90.31)                
+ISONAM           641.16 ***             
+                 (69.98)                
+ISONER           537.71 ***             
+                 (91.70)                
+ISONGA          1396.45 ***             
+                 (88.85)                
+ISONIC           336.07 ***             
+                 (79.61)                
+ISONLD          1038.24 ***             
+                 (59.39)                
+ISONOR           742.04 ***             
+                 (50.31)                
+ISONPL           691.78 ***             
+                 (69.20)                
+ISONZL          1036.74 ***             
+                 (62.83)                
+ISOOMN           265.37 ***             
+                 (79.05)                
+ISOPAK           503.90 ***             
+                 (77.89)                
+ISOPAN           613.10 ***             
+                 (82.55)                
+ISOPER           696.09 ***             
+                 (59.04)                
+ISOPHL           798.04 ***             
+                 (89.05)                
+ISOPNG           181.68 *               
+                 (77.36)                
+ISOPOL           827.48 ***             
+                 (47.20)                
+ISOPRI           871.73 ***             
+                 (85.49)                
+ISOPRT           740.10 ***             
+                 (64.88)                
+ISOPRY           743.81 ***             
+                 (76.27)                
+ISOQAT           575.87 ***             
+                 (93.12)                
+ISOROU           811.22 ***             
+                 (47.89)                
+ISORUS           972.11 ***             
+                 (45.70)                
+ISORWA           826.97 ***             
+                 (67.02)                
+ISOSAU           419.24 ***             
+                 (81.90)                
+ISOSDN           618.45 ***             
+                 (89.66)                
+ISOSEN           564.19 ***             
+                 (87.87)                
+ISOSGP          1054.18 ***             
+                (108.95)                
+ISOSLB           297.03 ***             
+                 (82.06)                
+ISOSLE          1697.36 ***             
+                 (86.20)                
+ISOSLV           452.68 ***             
+                 (80.72)                
+ISOSOM          1053.99 ***             
+                 (90.69)                
+ISOSRB           837.26 ***             
+                 (51.29)                
+ISOSSD          1035.58 ***             
+                 (88.80)                
+ISOSTP           474.42 ***             
+                 (79.63)                
+ISOSUR           601.43 ***             
+                 (85.07)                
+ISOSVK           771.18 ***             
+                 (47.12)                
+ISOSVN           866.08 ***             
+                 (49.21)                
+ISOSWE           849.30 ***             
+                 (48.94)                
+ISOSWZ           747.81 ***             
+                 (68.05)                
+ISOSYC           450.85 ***             
+                 (85.38)                
+ISOSYR           700.31 ***             
+                 (67.22)                
+ISOTCD          1183.96 ***             
+                 (89.16)                
+ISOTGO           698.10 ***             
+                 (86.71)                
+ISOTHA           440.82 ***             
+                 (84.90)                
+ISOTJK           757.14 ***             
+                 (55.03)                
+ISOTKM           531.77 ***             
+                 (57.98)                
+ISOTLS           443.79 ***             
+                 (80.26)                
+ISOTON           350.77 ***             
+                 (83.54)                
+ISOTTO           690.28 ***             
+                 (83.95)                
+ISOTUN           623.97 ***             
+                 (66.20)                
+ISOTUR           613.11 ***             
+                 (52.65)                
+ISOTZA           915.86 ***             
+                 (75.75)                
+ISOUGA           729.46 ***             
+                 (78.94)                
+ISOUKR          1074.13 ***             
+                 (53.04)                
+ISOURY           788.46 ***             
+                 (68.12)                
+ISOUSA          1029.80 ***             
+                 (65.87)                
+ISOUZB           725.54 ***             
+                 (55.36)                
+ISOVCT           344.54 ***             
+                 (83.73)                
+ISOVEN           504.19 ***             
+                 (79.36)                
+ISOVNM           661.77 ***             
+                 (83.32)                
+ISOVUT           256.79 **              
+                 (79.47)                
+ISOWSM           431.93 ***             
+                 (90.54)                
+ISOYEM           601.29 ***             
+                 (77.46)                
+ISOZAF           840.64 ***             
+                 (64.82)                
+ISOZMB           800.36 ***             
+                 (75.72)                
+ISOZWE          1070.31 ***             
+                 (71.60)                
+----------------------------------------
+R^2                0.97         0.33    
+Adj. R^2           0.97         0.28    
+Num. obs.       3223         3223       
+========================================
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#year 2000 as dummy variable (base level)???</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="adding-year-as-a-factor" class="level2">
+<h2 class="anchored" data-anchor-id="adding-year-as-a-factor">Adding year as a factor</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lmmod <span class="ot">&lt;-</span> <span class="fu">lm</span>(matMor <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> armed_conflict <span class="sc">+</span> gdp1000 <span class="sc">+</span> OECD <span class="sc">+</span> pctpopdens <span class="sc">+</span> urban <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>              agedep <span class="sc">+</span> male_edu <span class="sc">+</span> temp <span class="sc">+</span> rainfall1000 <span class="sc">+</span> Earthquake <span class="sc">+</span> Drought <span class="sc">+</span> ISO <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">as.factor</span>(Year), <span class="at">data =</span> final_data)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(matMor <span class="sc">~</span> armed_conflict <span class="sc">+</span> gdp1000 <span class="sc">+</span> OECD <span class="sc">+</span> pctpopdens <span class="sc">+</span> urban <span class="sc">+</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                  agedep <span class="sc">+</span> male_edu <span class="sc">+</span> temp <span class="sc">+</span> rainfall1000 <span class="sc">+</span> Earthquake <span class="sc">+</span> Drought,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>, <span class="st">"Year"</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">effect =</span> <span class="st">"twoways"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> final_data)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">screenreg</span>(<span class="fu">list</span>(lmmod, plmmod), <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"LM"</span>, <span class="st">"PLM"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=============================================
+                     LM           PLM        
+---------------------------------------------
+armed_conflict         37.00 ***    37.00 ***
+                       (4.38)       (4.38)   
+gdp1000                 2.98 ***     2.98 ***
+                       (0.25)       (0.25)   
+OECD                   26.12        26.12    
+                      (15.36)      (15.36)   
+pctpopdens            -54.03       -54.03    
+                      (37.32)      (37.32)   
+urban                  -6.04 ***    -6.04 ***
+                       (0.99)       (0.99)   
+agedep                 -0.47        -0.47    
+                       (0.32)       (0.32)   
+male_edu              -42.92 ***   -42.92 ***
+                       (5.80)       (5.80)   
+temp                    9.94 **      9.94 ** 
+                       (3.13)       (3.13)   
+rainfall1000           -2.16        -2.16    
+                       (6.04)       (6.04)   
+Earthquake              3.90         3.90    
+                       (4.60)       (4.60)   
+Drought                -0.78        -0.78    
+                       (4.10)       (4.10)   
+ISOAFG               1165.16 ***             
+                      (60.06)                
+ISOAGO                724.17 ***             
+                      (88.07)                
+ISOALB                562.11 ***             
+                      (77.76)                
+ISOARE                108.50                 
+                     (102.68)                
+ISOARG                686.19 ***             
+                      (94.25)                
+ISOARM                759.37 ***             
+                      (79.97)                
+ISOATG                429.18 ***             
+                     (105.56)                
+ISOAUS                651.28 ***             
+                     (108.16)                
+ISOAUT                538.95 ***             
+                      (84.51)                
+ISOAZE                591.60 ***             
+                      (81.50)                
+ISOBDI                804.83 ***             
+                      (75.30)                
+ISOBEL                671.91 ***             
+                      (96.92)                
+ISOBEN                622.06 ***             
+                      (97.95)                
+ISOBFA                389.43 ***             
+                      (96.02)                
+ISOBGD                534.43 ***             
+                      (94.43)                
+ISOBGR                538.71 ***             
+                      (79.29)                
+ISOBHR                426.45 ***             
+                     (111.73)                
+ISOBHS                494.88 ***             
+                     (105.34)                
+ISOBIH                461.73 ***             
+                      (72.35)                
+ISOBLR                712.03 ***             
+                      (78.79)                
+ISOBLZ                384.55 ***             
+                     (100.53)                
+ISOBOL                598.07 ***             
+                      (76.18)                
+ISOBRA                444.25 ***             
+                      (94.81)                
+ISOBRB                590.24 ***             
+                     (115.96)                
+ISOBRN                497.43 ***             
+                     (116.85)                
+ISOBTN                313.29 ***             
+                      (53.89)                
+ISOBWA                453.86 ***             
+                      (82.93)                
+ISOCAF               1177.59 ***             
+                      (89.64)                
+ISOCAN                795.23 ***             
+                      (97.77)                
+ISOCHE                646.81 ***             
+                     (101.98)                
+ISOCHL                589.57 ***             
+                      (78.33)                
+ISOCHN                540.50 ***             
+                      (76.46)                
+ISOCMR                931.38 ***             
+                      (96.38)                
+ISOCOD                852.86 ***             
+                      (95.21)                
+ISOCOG               1019.10 ***             
+                     (103.49)                
+ISOCOL                472.48 ***             
+                      (88.23)                
+ISOCOM                519.53 ***             
+                      (93.27)                
+ISOCPV                112.02                 
+                      (78.98)                
+ISOCRI                554.93 ***             
+                     (104.74)                
+ISOCUB                437.99 ***             
+                     (102.93)                
+ISOCYP                498.46 ***             
+                      (95.58)                
+ISOCZE                618.04 ***             
+                      (83.65)                
+ISODEU                689.45 ***             
+                      (98.26)                
+ISODJI                561.40 ***             
+                     (101.14)                
+ISODNK                618.10 ***             
+                      (94.17)                
+ISODOM                497.99 ***             
+                      (99.08)                
+ISODZA                460.16 ***             
+                      (74.76)                
+ISOECU                552.18 ***             
+                      (89.81)                
+ISOEGY                750.25 ***             
+                     (111.75)                
+ISOERI                822.63 ***             
+                      (87.61)                
+ISOESP                428.37 ***             
+                      (81.53)                
+ISOEST                726.59 ***             
+                      (82.36)                
+ISOETH                728.37 ***             
+                      (72.31)                
+ISOFIN                477.72 ***             
+                      (78.60)                
+ISOFJI                294.95 **              
+                      (98.62)                
+ISOFRA                591.44 ***             
+                      (91.40)                
+ISOFSM                406.32 ***             
+                     (100.08)                
+ISOGAB                805.81 ***             
+                     (109.27)                
+ISOGBR                788.33 ***             
+                     (103.33)                
+ISOGEO                711.86 ***             
+                      (84.01)                
+ISOGHA                695.35 ***             
+                     (104.35)                
+ISOGIN                932.33 ***             
+                      (92.37)                
+ISOGMB                922.93 ***             
+                      (99.12)                
+ISOGNB                975.92 ***             
+                      (94.97)                
+ISOGNQ                573.50 ***             
+                      (99.09)                
+ISOGRC                565.96 ***             
+                      (92.35)                
+ISOGRD                200.03 *               
+                      (97.97)                
+ISOGTM                389.22 ***             
+                      (85.47)                
+ISOGUY                559.28 ***             
+                     (105.02)                
+ISOHND                200.57 *               
+                      (84.77)                
+ISOHRV                520.17 ***             
+                      (79.74)                
+ISOHTI                760.86 ***             
+                      (94.34)                
+ISOHUN                552.10 ***             
+                      (80.58)                
+ISOIDN                655.99 ***             
+                     (106.55)                
+ISOIND                443.08 ***             
+                      (94.03)                
+ISOIRL                526.61 ***             
+                      (85.84)                
+ISOIRN                268.43 ***             
+                      (66.67)                
+ISOIRQ                470.55 ***             
+                      (95.33)                
+ISOISL                463.04 ***             
+                      (84.55)                
+ISOITA                498.08 ***             
+                      (86.39)                
+ISOJAM                526.16 ***             
+                     (104.14)                
+ISOJOR                665.37 ***             
+                      (96.05)                
+ISOJPN                787.95 ***             
+                     (112.41)                
+ISOKAZ                599.03 ***             
+                      (70.97)                
+ISOKEN                893.97 ***             
+                      (91.32)                
+ISOKGZ                697.17 ***             
+                      (72.16)                
+ISOKHM                415.40 ***             
+                      (96.11)                
+ISOKIR                277.16 **              
+                      (94.46)                
+ISOKOR                860.58 ***             
+                     (106.62)                
+ISOKWT                505.41 ***             
+                     (114.68)                
+ISOLAO                410.27 ***             
+                      (86.86)                
+ISOLBN                633.91 ***             
+                      (92.26)                
+ISOLBR               1036.70 ***             
+                      (98.37)                
+ISOLBY                503.24 ***             
+                      (92.71)                
+ISOLCA                259.66 **              
+                      (95.94)                
+ISOLKA                491.90 ***             
+                     (108.42)                
+ISOLSO                840.02 ***             
+                      (60.35)                
+ISOLTU                648.89 ***             
+                      (81.25)                
+ISOLUX                415.77 ***             
+                      (94.85)                
+ISOLVA                716.06 ***             
+                      (81.64)                
+ISOMAR                439.14 ***             
+                      (73.47)                
+ISOMDA                602.12 ***             
+                      (79.17)                
+ISOMDG                658.00 ***             
+                      (82.42)                
+ISOMDV                250.88 ***             
+                      (48.32)                
+ISOMEX                492.26 ***             
+                      (92.88)                
+ISOMKD                497.16 ***             
+                      (75.70)                
+ISOMLI                665.93 ***             
+                      (96.61)                
+ISOMLT                790.70 ***             
+                     (114.33)                
+ISOMMR                403.83 ***             
+                      (90.60)                
+ISOMNE                497.45 ***             
+                      (83.16)                
+ISOMNG                659.94 ***             
+                      (57.17)                
+ISOMOZ                584.38 ***             
+                      (85.88)                
+ISOMRT                977.09 ***             
+                     (101.60)                
+ISOMUS                555.58 ***             
+                     (100.33)                
+ISOMWI                790.05 ***             
+                      (88.49)                
+ISOMYS                484.34 ***             
+                     (108.82)                
+ISONAM                553.18 ***             
+                      (84.11)                
+ISONER                601.41 ***             
+                      (96.88)                
+ISONGA               1304.59 ***             
+                     (102.80)                
+ISONIC                275.31 **              
+                      (90.27)                
+ISONLD                703.97 ***             
+                      (99.74)                
+ISONOR                428.28 ***             
+                      (89.25)                
+ISONPL                622.04 ***             
+                      (79.18)                
+ISONZL                720.33 ***             
+                     (101.11)                
+ISOOMN                161.42                 
+                      (92.97)                
+ISOPAK                436.98 ***             
+                      (89.51)                
+ISOPAN                442.98 ***             
+                     (102.66)                
+ISOPER                544.39 ***             
+                      (80.24)                
+ISOPHL                612.07 ***             
+                     (110.10)                
+ISOPNG                180.92 *               
+                      (83.08)                
+ISOPOL                596.17 ***             
+                      (78.14)                
+ISOPRI                597.61 ***             
+                     (115.68)                
+ISOPRT                527.74 ***             
+                      (87.76)                
+ISOPRY                591.62 ***             
+                      (94.59)                
+ISOQAT                323.42 **              
+                     (114.47)                
+ISOROU                604.26 ***             
+                      (76.65)                
+ISORUS                720.95 ***             
+                      (79.60)                
+ISORWA                783.10 ***             
+                      (75.99)                
+ISOSAU                280.66 **              
+                      (98.62)                
+ISOSDN                573.38 ***             
+                     (100.83)                
+ISOSEN                555.07 ***             
+                      (95.24)                
+ISOSGP                713.38 ***             
+                     (136.63)                
+ISOSLB                261.36 **              
+                      (90.92)                
+ISOSLE               1677.07 ***             
+                      (93.71)                
+ISOSLV                348.44 ***             
+                      (94.13)                
+ISOSOM               1037.11 ***             
+                      (99.17)                
+ISOSRB                615.71 ***             
+                      (82.30)                
+ISOSSD               1073.89 ***             
+                      (94.89)                
+ISOSTP                405.46 ***             
+                      (91.03)                
+ISOSUR                464.92 ***             
+                     (101.16)                
+ISOSVK                536.90 ***             
+                      (79.49)                
+ISOSVN                607.90 ***             
+                      (83.84)                
+ISOSWE                560.73 ***             
+                      (86.27)                
+ISOSWZ                680.84 ***             
+                      (80.58)                
+ISOSYC                299.39 **              
+                     (103.72)                
+ISOSYR                539.79 ***             
+                      (87.67)                
+ISOTCD               1226.19 ***             
+                      (95.31)                
+ISOTGO                640.94 ***             
+                      (97.83)                
+ISOTHA                300.73 **              
+                     (101.46)                
+ISOTJK                583.19 ***             
+                      (80.36)                
+ISOTKM                391.43 ***             
+                      (78.84)                
+ISOTLS                428.76 ***             
+                      (88.52)                
+ISOTON                254.37 *               
+                      (99.19)                
+ISOTTO                481.48 ***             
+                     (107.26)                
+ISOTUN                477.16 ***             
+                      (83.56)                
+ISOTUR                437.68 ***             
+                      (76.42)                
+ISOTZA                869.57 ***             
+                      (86.89)                
+ISOUGA                674.75 ***             
+                      (91.62)                
+ISOUKR                808.07 ***             
+                      (88.11)                
+ISOURY                591.97 ***             
+                      (90.00)                
+ISOUSA                688.92 ***             
+                     (105.90)                
+ISOUZB                541.73 ***             
+                      (82.18)                
+ISOVCT                246.32 *               
+                      (97.22)                
+ISOVEN                376.63 ***             
+                      (95.88)                
+ISOVNM                488.76 ***             
+                     (102.76)                
+ISOVUT                210.13 *               
+                      (89.59)                
+ISOWSM                311.53 **              
+                     (107.37)                
+ISOYEM                535.70 ***             
+                      (88.11)                
+ISOZAF                666.51 ***             
+                      (86.23)                
+ISOZMB                700.82 ***             
+                      (91.83)                
+ISOZWE                958.68 ***             
+                      (88.93)                
+as.factor(Year)2001    -4.01                 
+                       (6.24)                
+as.factor(Year)2002    -6.52                 
+                       (6.33)                
+as.factor(Year)2003   -10.32                 
+                       (6.45)                
+as.factor(Year)2004   -18.63 **              
+                       (6.65)                
+as.factor(Year)2005   -27.48 ***             
+                       (6.90)                
+as.factor(Year)2006   -35.48 ***             
+                       (7.21)                
+as.factor(Year)2007   -42.98 ***             
+                       (7.62)                
+as.factor(Year)2008   -47.40 ***             
+                       (7.99)                
+as.factor(Year)2009   -47.03 ***             
+                       (8.18)                
+as.factor(Year)2010   -50.52 ***             
+                       (8.66)                
+as.factor(Year)2011   -53.00 ***             
+                       (9.09)                
+as.factor(Year)2012   -52.65 ***             
+                       (9.45)                
+as.factor(Year)2013   -52.35 ***             
+                       (9.89)                
+as.factor(Year)2014   -52.85 ***             
+                      (10.34)                
+as.factor(Year)2015   -48.89 ***             
+                      (10.68)                
+as.factor(Year)2016   -49.98 ***             
+                      (11.15)                
+as.factor(Year)2017   -51.42 ***             
+                      (11.61)                
+---------------------------------------------
+R^2                     0.97         0.13    
+Adj. R^2                0.97         0.07    
+Num. obs.            3223         3223       
+=============================================
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05</code></pre>
+</div>
+</div>
+<p>Interpretation: (when we include year as a factor) for every increase in gdp by one unit, maternal mortality increase by 2.98.</p>
+<section id="for-all-the-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="for-all-the-predictors">for all the predictors</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="st">" ~ armed_conflict + gdp1000 + OECD + pctpopdens + urban + </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">                  agedep + male_edu + temp + rainfall1000 + Earthquake + Drought + </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">                  ISO + as.factor(Year)"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>matmormod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">update.formula</span>(preds, matMor <span class="sc">~</span> .), <span class="at">data =</span> final_data)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>un5mormod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">update.formula</span>(preds, under5Mor <span class="sc">~</span> .), <span class="at">data =</span> final_data)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>infmormod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">update.formula</span>(preds, infMor <span class="sc">~</span> .), <span class="at">data =</span> final_data)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>neomormod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">update.formula</span>(preds, neoMor <span class="sc">~</span> .), <span class="at">data =</span> final_data)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">screenreg</span>(<span class="fu">list</span>(matmormod, un5mormod, infmormod, neomormod), <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"Maternal Mortality"</span>, <span class="st">"Under-5 Mortality"</span>, <span class="st">"Infant Mortality"</span>, <span class="st">"Neonatal Mortality"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+================================================================================================
+                     Maternal Mortality  Under-5 Mortality  Infant Mortality  Neonatal Mortality
+------------------------------------------------------------------------------------------------
+(Intercept)           1165.16 ***         114.65 ***          71.01 ***         45.26 ***       
+                       (60.06)             (9.24)             (4.78)            (1.93)          
+armed_conflict          37.00 ***           3.95 ***           2.36 ***          0.50 ***       
+                        (4.38)             (0.70)             (0.36)            (0.15)          
+gdp1000                  2.98 ***           0.62 ***           0.33 ***          0.11 ***       
+                        (0.25)             (0.04)             (0.02)            (0.01)          
+OECD                    26.12               5.26 *             2.34 *            0.81           
+                       (15.36)             (2.24)             (1.16)            (0.47)          
+pctpopdens             -54.03             -37.62 ***         -20.03 ***         -6.05 ***       
+                       (37.32)             (5.70)             (2.95)            (1.19)          
+urban                   -6.04 ***          -1.42 ***          -0.86 ***         -0.35 ***       
+                        (0.99)             (0.15)             (0.08)            (0.03)          
+agedep                  -0.47               0.01               0.10 ***          0.08 ***       
+                        (0.32)             (0.05)             (0.02)            (0.01)          
+male_edu               -42.92 ***          -4.58 ***          -2.08 ***         -0.11           
+                        (5.80)             (0.83)             (0.43)            (0.17)          
+temp                     9.94 **            2.36 ***           1.14 ***          0.31 **        
+                        (3.13)             (0.51)             (0.26)            (0.11)          
+rainfall1000            -2.16               0.48               0.29             -0.04           
+                        (6.04)             (0.96)             (0.50)            (0.20)          
+Earthquake               3.90               1.56 *             0.86 *            0.45 **        
+                        (4.60)             (0.74)             (0.38)            (0.15)          
+Drought                 -0.78               1.10               0.86 **           0.48 ***       
+                        (4.10)             (0.64)             (0.33)            (0.13)          
+ISOAGO                -440.99 ***          52.18 ***          24.96 ***         -5.68 ***       
+                       (40.99)             (6.50)             (3.37)            (1.36)          
+ISOALB                -603.04 ***         -15.54 **          -15.07 ***        -26.88 ***       
+                       (41.32)             (6.03)             (3.12)            (1.26)          
+ISOARE               -1056.66 ***        -128.89 ***         -76.50 ***        -48.46 ***       
+                       (66.39)            (10.36)             (5.37)            (2.17)          
+ISOARG                -478.96 ***           2.54              -3.71            -21.62 ***       
+                       (55.43)             (8.21)             (4.25)            (1.72)          
+ISOARM                -405.78 ***          21.17 **            5.86            -19.82 ***       
+                       (53.14)             (7.72)             (4.00)            (1.62)          
+ISOATG                -735.98 ***         -61.15 ***         -39.69 ***        -33.82 ***       
+                       (62.87)             (9.74)             (5.05)            (2.04)          
+ISOAUS                -513.87 ***          -2.04              -8.20            -25.87 ***       
+                       (72.92)            (10.74)             (5.56)            (2.25)          
+ISOAUT                -626.21 ***         -39.96 ***         -33.18 ***        -36.95 ***       
+                       (58.13)             (8.48)             (4.39)            (1.78)          
+ISOAZE                -573.56 ***           4.26               2.49            -16.48 ***       
+                       (46.14)             (6.65)             (3.44)            (1.39)          
+ISOBDI                -360.33 ***         -15.61 **          -12.77 ***        -20.81 ***       
+                       (33.92)             (5.40)             (2.80)            (1.13)          
+ISOBEL                -493.24 ***          -9.12             -14.42 **         -29.39 ***       
+                       (66.89)             (9.76)             (5.05)            (2.04)          
+ISOBEN                -543.09 ***           9.89               4.06            -11.21 ***       
+                       (54.32)             (8.72)             (4.52)            (1.83)          
+ISOBFA                -775.73 ***          -3.46             -13.15 **         -18.34 ***       
+                       (56.56)             (9.06)             (4.69)            (1.90)          
+ISOBGD                -630.73 ***         -18.14 *            -7.21             -8.44 ***       
+                       (53.92)             (8.49)             (4.40)            (1.78)          
+ISOBGR                -626.45 ***         -41.65 ***         -34.00 ***        -37.16 ***       
+                       (48.44)             (6.99)             (3.62)            (1.46)          
+ISOBHR                -738.71 ***         -21.75             -13.54 *          -24.46 ***       
+                       (74.31)            (11.45)             (5.93)            (2.40)          
+ISOBHS                -670.28 ***         -42.93 ***         -28.88 ***        -31.36 ***       
+                       (62.45)             (9.54)             (4.94)            (2.00)          
+ISOBIH                -703.43 ***         -59.24 ***         -44.08 ***        -39.19 ***       
+                       (45.08)             (6.59)             (3.41)            (1.38)          
+ISOBLR                -453.12 ***           5.07              -8.64 *          -28.70 ***       
+                       (52.52)             (7.66)             (3.97)            (1.60)          
+ISOBLZ                -780.61 ***         -63.78 ***         -39.08 ***        -31.92 ***       
+                       (56.97)             (8.97)             (4.65)            (1.88)          
+ISOBOL                -567.09 ***         -27.50 ***         -18.80 ***        -22.94 ***       
+                       (35.52)             (5.33)             (2.76)            (1.12)          
+ISOBRA                -720.91 ***         -21.52 *           -12.57 **         -20.43 ***       
+                       (55.36)             (8.50)             (4.40)            (1.78)          
+ISOBRB                -574.92 ***         -22.70 *           -15.10 **         -23.69 ***       
+                       (73.18)            (11.18)             (5.79)            (2.34)          
+ISOBRN                -667.73 ***         -42.73 ***         -27.46 ***        -29.17 ***       
+                       (76.13)            (11.71)             (6.07)            (2.45)          
+ISOBTN                -851.87 ***         -78.02 ***         -43.45 ***        -27.36 ***       
+                       (33.42)             (5.11)             (2.65)            (1.07)          
+ISOBWA                -711.30 ***         -33.51 ***         -21.39 ***        -23.48 ***       
+                       (40.74)             (6.40)             (3.32)            (1.34)          
+ISOCAF                  12.43              26.76 ***          20.24 ***         -4.71 **        
+                       (45.36)             (7.28)             (3.77)            (1.53)          
+ISOCAN                -369.93 ***          24.32 *             4.02            -23.03 ***       
+                       (74.49)            (10.90)             (5.65)            (2.28)          
+ISOCHE                -518.35 ***         -24.71 *           -24.42 ***        -34.31 ***       
+                       (75.29)            (10.96)             (5.68)            (2.30)          
+ISOCHL                -575.59 ***         -18.56 **          -19.15 ***        -29.57 ***       
+                       (45.93)             (6.73)             (3.48)            (1.41)          
+ISOCHN                -624.66 ***         -14.63 *           -12.99 ***        -23.00 ***       
+                       (41.47)             (6.13)             (3.18)            (1.28)          
+ISOCMR                -233.78 ***          24.46 **            8.93 *          -13.50 ***       
+                       (49.27)             (7.83)             (4.05)            (1.64)          
+ISOCOD                -312.29 ***          26.26 ***          19.44 ***        -15.46 ***       
+                       (46.71)             (7.35)             (3.81)            (1.54)          
+ISOCOG                -146.05 *            26.49 **           11.94 **         -13.00 ***       
+                       (56.95)             (8.82)             (4.57)            (1.85)          
+ISOCOL                -692.68 ***         -33.84 ***         -22.18 ***        -25.54 ***       
+                       (47.28)             (7.23)             (3.75)            (1.51)          
+ISOCOM                -645.63 ***         -19.64 *            -8.66 *          -12.74 ***       
+                       (48.85)             (7.80)             (4.04)            (1.63)          
+ISOCPV               -1053.14 ***        -108.04 ***         -63.69 ***        -38.62 ***       
+                       (42.52)             (6.75)             (3.50)            (1.41)          
+ISOCRI                -610.23 ***         -21.78 *           -16.83 ***        -24.72 ***       
+                       (63.60)             (9.71)             (5.03)            (2.03)          
+ISOCUB                -727.17 ***         -65.58 ***         -43.85 ***        -37.91 ***       
+                       (60.23)             (9.31)             (4.82)            (1.95)          
+ISOCYP                -666.70 ***         -48.34 ***         -35.94 ***        -36.75 ***       
+                       (55.59)             (8.23)             (4.26)            (1.72)          
+ISOCZE                -547.12 ***         -25.84 **          -25.71 ***        -34.91 ***       
+                       (56.90)             (8.23)             (4.26)            (1.72)          
+ISODEU                -475.71 ***         -15.42             -19.82 ***        -33.19 ***       
+                       (68.82)             (9.94)             (5.15)            (2.08)          
+ISODJI                -603.76 ***           2.30              13.22 **          -1.49           
+                       (59.66)             (9.48)             (4.91)            (1.99)          
+ISODNK                -547.06 ***         -25.97 **          -25.52 ***        -34.48 ***       
+                       (66.44)             (9.67)             (5.01)            (2.03)          
+ISODOM                -667.17 ***         -12.99              -6.21            -11.00 ***       
+                       (56.27)             (8.74)             (4.53)            (1.83)          
+ISODZA                -705.00 ***         -27.18 ***         -15.28 ***        -18.24 ***       
+                       (37.26)             (5.66)             (2.93)            (1.19)          
+ISOECU                -612.98 ***         -26.87 ***         -19.77 ***        -27.56 ***       
+                       (46.60)             (7.07)             (3.66)            (1.48)          
+ISOEGY                -414.91 ***          55.14 ***          30.50 ***         -5.04 *         
+                       (72.31)            (10.89)             (5.64)            (2.28)          
+ISOERI                -342.53 ***         -78.33 ***         -47.63 ***        -32.06 ***       
+                       (48.03)             (7.73)             (4.00)            (1.62)          
+ISOESP                -736.79 ***         -46.73 ***         -34.46 ***        -35.23 ***       
+                       (47.20)             (6.96)             (3.60)            (1.46)          
+ISOEST                -438.57 ***           2.32             -10.92 *          -30.01 ***       
+                       (58.02)             (8.51)             (4.41)            (1.78)          
+ISOETH                -436.79 ***         -34.51 ***         -23.65 ***        -13.25 ***       
+                       (32.75)             (5.19)             (2.69)            (1.09)          
+ISOFIN                -687.43 ***         -60.38 ***         -47.02 ***        -43.48 ***       
+                       (60.02)             (8.90)             (4.61)            (1.87)          
+ISOFJI                -870.21 ***         -78.04 ***         -48.75 ***        -39.28 ***       
+                       (58.54)             (9.07)             (4.70)            (1.90)          
+ISOFRA                -573.72 ***         -24.68 **          -24.28 ***        -33.12 ***       
+                       (59.06)             (8.59)             (4.45)            (1.80)          
+ISOFSM                -758.84 ***         -66.63 ***         -40.29 ***        -31.09 ***       
+                       (56.98)             (8.92)             (4.62)            (1.87)          
+ISOGAB                -359.34 ***          23.25 *            11.16 *           -9.71 ***       
+                       (65.21)            (10.11)             (5.23)            (2.12)          
+ISOGBR                -376.83 ***          26.96 *             5.85            -22.30 ***       
+                       (74.82)            (10.90)             (5.65)            (2.28)          
+ISOGEO                -453.30 ***           2.85              -6.05            -22.87 ***       
+                       (52.48)             (7.54)             (3.91)            (1.58)          
+ISOGHA                -469.81 ***          -4.82              -4.78            -12.37 ***       
+                       (58.05)             (9.18)             (4.75)            (1.92)          
+ISOGIN                -232.82 ***          11.02               3.24            -12.78 ***       
+                       (48.71)             (7.84)             (4.06)            (1.64)          
+ISOGMB                -242.23 ***          -7.55             -10.96 *           -9.14 ***       
+                       (54.65)             (8.74)             (4.53)            (1.83)          
+ISOGNB                -189.24 ***           8.97               2.89             -2.56           
+                       (52.52)             (8.44)             (4.37)            (1.77)          
+ISOGNQ                -591.65 ***           6.94               7.80            -15.56 ***       
+                       (55.37)             (8.66)             (4.48)            (1.81)          
+ISOGRC                -599.19 ***         -24.18 **          -22.27 ***        -31.80 ***       
+                       (56.12)             (8.20)             (4.25)            (1.72)          
+ISOGRD                -965.13 ***        -103.54 ***         -62.79 ***        -40.92 ***       
+                       (56.65)             (8.97)             (4.65)            (1.88)          
+ISOGTM                -775.94 ***         -45.73 ***         -26.90 ***        -26.10 ***       
+                       (42.25)             (6.68)             (3.46)            (1.40)          
+ISOGUY                -605.87 ***         -38.67 ***         -21.62 ***        -19.10 ***       
+                       (60.64)             (9.48)             (4.91)            (1.99)          
+ISOHND                -964.58 ***         -85.41 ***         -51.95 ***        -35.96 ***       
+                       (44.12)             (7.01)             (3.63)            (1.47)          
+ISOHRV                -644.99 ***         -45.55 ***         -37.05 ***        -37.82 ***       
+                       (46.75)             (6.77)             (3.51)            (1.42)          
+ISOHTI                -404.30 ***          18.01 *            14.91 ***         -9.74 ***       
+                       (52.45)             (8.26)             (4.28)            (1.73)          
+ISOHUN                -613.06 ***         -37.31 ***         -30.70 ***        -35.16 ***       
+                       (50.74)             (7.35)             (3.81)            (1.54)          
+ISOIDN                -509.17 ***         -14.51              -6.37            -16.89 ***       
+                       (64.19)             (9.99)             (5.17)            (2.09)          
+ISOIND                -722.07 ***         -32.32 ***         -14.87 ***        -11.52 ***       
+                       (51.39)             (8.13)             (4.21)            (1.70)          
+ISOIRL                -638.55 ***         -36.50 ***         -30.37 ***        -35.40 ***       
+                       (58.19)             (8.56)             (4.43)            (1.79)          
+ISOIRN                -896.73 ***         -68.81 ***         -42.84 ***        -32.10 ***       
+                       (32.51)             (4.93)             (2.56)            (1.03)          
+ISOIRQ                -694.61 ***         -29.61 ***         -19.48 ***        -21.66 ***       
+                       (48.22)             (7.49)             (3.88)            (1.57)          
+ISOISL                -702.12 ***         -74.64 ***         -55.89 ***        -47.72 ***       
+                       (67.61)            (10.02)             (5.19)            (2.10)          
+ISOITA                -667.08 ***         -40.82 ***         -32.02 ***        -35.05 ***       
+                       (52.41)             (7.66)             (3.97)            (1.61)          
+ISOJAM                -639.00 ***         -40.19 ***         -25.86 ***        -24.62 ***       
+                       (60.88)             (9.41)             (4.88)            (1.97)          
+ISOJOR                -499.78 ***           4.24              -3.56            -20.70 ***       
+                       (52.77)             (7.85)             (4.06)            (1.64)          
+ISOJPN                -377.21 ***          16.11              -0.70            -25.53 ***       
+                       (78.78)            (11.48)             (5.95)            (2.41)          
+ISOKAZ                -566.13 ***         -13.50 *           -13.40 ***        -24.88 ***       
+                       (46.15)             (6.76)             (3.50)            (1.42)          
+ISOKEN                -271.19 ***           2.78              -3.92            -15.72 ***       
+                       (44.58)             (6.91)             (3.58)            (1.45)          
+ISOKGZ                -467.98 ***           7.52              -0.59            -20.13 ***       
+                       (48.37)             (7.16)             (3.71)            (1.50)          
+ISOKHM                -749.76 ***         -60.12 ***         -28.48 ***        -24.12 ***       
+                       (55.92)             (8.93)             (4.63)            (1.87)          
+ISOKIR                -887.99 ***         -48.14 ***         -26.75 ***        -26.37 ***       
+                       (54.52)             (8.55)             (4.43)            (1.79)          
+ISOKOR                -304.58 ***          37.94 ***          13.70 *          -19.38 ***       
+                       (77.13)            (11.25)             (5.83)            (2.36)          
+ISOKWT                -659.75 ***         -18.48             -12.56 *          -24.02 ***       
+                       (75.08)            (11.46)             (5.94)            (2.40)          
+ISOLAO                -754.89 ***         -57.15 ***         -28.91 ***        -22.45 ***       
+                       (47.48)             (7.56)             (3.92)            (1.58)          
+ISOLBN                -531.24 ***           4.00              -4.06            -22.06 ***       
+                       (53.49)             (7.95)             (4.12)            (1.67)          
+ISOLBR                -128.45 *            31.14 ***          23.12 ***         -7.52 ***       
+                       (52.50)             (8.35)             (4.33)            (1.75)          
+ISOLBY                -661.91 ***         -33.46 ***         -22.42 ***        -26.77 ***       
+                       (50.77)             (7.75)             (4.01)            (1.62)          
+ISOLCA                -905.49 ***         -98.20 ***         -58.04 ***        -37.78 ***       
+                       (56.08)             (8.83)             (4.58)            (1.85)          
+ISOLKA                -673.26 ***         -30.39 **          -21.10 ***        -26.46 ***       
+                       (65.97)            (10.21)             (5.29)            (2.14)          
+ISOLSO                -325.14 ***           8.92 *             7.20 ***         -4.99 ***       
+                       (25.73)             (3.96)             (2.05)            (0.83)          
+ISOLTU                -516.27 ***         -20.45 *           -24.53 ***        -35.43 ***       
+                       (55.29)             (8.08)             (4.18)            (1.69)          
+ISOLUX                -749.39 ***         -73.22 ***         -50.82 ***        -43.56 ***       
+                       (67.97)            (10.00)             (5.18)            (2.10)          
+ISOLVA                -449.10 ***          -4.02             -14.13 ***        -30.65 ***       
+                       (55.67)             (8.13)             (4.21)            (1.70)          
+ISOMAR                -726.01 ***         -18.49 **           -9.00 **         -15.05 ***       
+                       (37.76)             (5.76)             (2.99)            (1.21)          
+ISOMDA                -563.04 ***         -20.92 **          -19.58 ***        -26.39 ***       
+                       (49.57)             (7.17)             (3.71)            (1.50)          
+ISOMDG                -507.16 ***         -30.68 ***         -21.81 ***        -24.41 ***       
+                       (38.01)             (6.05)             (3.13)            (1.27)          
+ISOMDV                -914.28 ***         -57.84 ***         -39.98 ***        -33.59 ***       
+                       (44.46)             (6.96)             (3.61)            (1.46)          
+ISOMEX                -672.90 ***         -11.34              -9.12 *          -22.30 ***       
+                       (54.43)             (8.21)             (4.25)            (1.72)          
+ISOMKD                -668.00 ***         -50.15 ***         -37.66 ***        -36.04 ***       
+                       (47.79)             (6.94)             (3.60)            (1.45)          
+ISOMLI                -499.22 ***           3.72              -6.19            -11.88 ***       
+                       (55.14)             (8.86)             (4.59)            (1.86)          
+ISOMLT                -374.45 ***          37.53 **           15.84 **         -14.97 ***       
+                       (78.17)            (11.59)             (6.00)            (2.43)          
+ISOMMR                -761.33 ***         -41.53 ***         -18.26 ***        -15.82 ***       
+                       (51.61)             (8.19)             (4.24)            (1.72)          
+ISOMNE                -667.71 ***         -63.43 ***         -48.34 ***        -42.78 ***       
+                       (56.41)             (8.21)             (4.25)            (1.72)          
+ISOMNG                -505.22 ***          10.04               0.09            -20.98 ***       
+                       (53.47)             (8.29)             (4.30)            (1.74)          
+ISOMOZ                -580.78 ***          -3.91              -0.33            -14.38 ***       
+                       (42.89)             (6.87)             (3.56)            (1.44)          
+ISOMRT                -188.07 ***         -12.47             -10.97 *          -11.42 ***       
+                       (56.17)             (9.01)             (4.67)            (1.89)          
+ISOMUS                -609.57 ***         -14.10             -10.19 *          -20.47 ***       
+                       (60.15)             (9.19)             (4.76)            (1.93)          
+ISOMWI                -375.11 ***           3.22              -6.71 *          -18.87 ***       
+                       (40.36)             (6.41)             (3.32)            (1.34)          
+ISOMYS                -680.82 ***         -36.49 ***         -24.97 ***        -28.73 ***       
+                       (66.95)            (10.37)             (5.37)            (2.17)          
+ISONAM                -611.98 ***         -28.60 ***         -22.56 ***        -24.61 ***       
+                       (40.03)             (6.24)             (3.23)            (1.31)          
+ISONER                -563.75 ***          -9.84             -26.90 ***        -22.77 ***       
+                       (57.29)             (9.17)             (4.75)            (1.92)          
+ISONGA                 139.43 *            61.05 ***          31.28 ***         -3.57           
+                       (55.72)             (8.86)             (4.59)            (1.86)          
+ISONIC                -889.85 ***         -84.50 ***         -50.29 ***        -34.87 ***       
+                       (48.81)             (7.76)             (4.02)            (1.63)          
+ISONLD                -461.19 ***          -2.40             -10.88 *          -28.37 ***       
+                       (70.14)            (10.20)             (5.28)            (2.14)          
+ISONOR                -736.87 ***         -77.79 ***         -56.87 ***        -47.61 ***       
+                       (69.37)            (10.25)             (5.31)            (2.15)          
+ISONPL                -543.12 ***         -23.73 ***         -12.01 ***        -12.46 ***       
+                       (37.82)             (5.93)             (3.07)            (1.24)          
+ISONZL                -444.83 ***           4.87              -6.70            -27.21 ***       
+                       (67.97)             (9.86)             (5.11)            (2.07)          
+ISOOMN               -1003.74 ***        -103.86 ***         -62.61 ***        -43.13 ***       
+                       (53.26)             (8.45)             (4.38)            (1.77)          
+ISOPAK                -728.17 ***           2.78              12.34 ***          6.38 ***       
+                       (44.51)             (7.08)             (3.67)            (1.48)          
+ISOPAN                -722.18 ***         -54.48 ***         -34.54 ***        -30.89 ***       
+                       (58.81)             (9.12)             (4.73)            (1.91)          
+ISOPER                -620.76 ***         -33.27 ***         -26.11 ***        -30.19 ***       
+                       (39.18)             (5.81)             (3.01)            (1.22)          
+ISOPHL                -553.09 ***         -10.64              -8.63            -20.11 ***       
+                       (65.00)            (10.05)             (5.20)            (2.10)          
+ISOPNG                -984.24 ***         -80.15 ***         -42.47 ***        -26.66 ***       
+                       (47.78)             (7.56)             (3.92)            (1.58)          
+ISOPOL                -568.99 ***         -19.46 *           -20.57 ***        -31.31 ***       
+                       (52.05)             (7.57)             (3.92)            (1.59)          
+ISOPRI                -567.55 ***                                                               
+                       (72.36)                                                                  
+ISOPRT                -637.42 ***         -20.44 **          -19.16 ***        -29.10 ***       
+                       (53.29)             (7.88)             (4.08)            (1.65)          
+ISOPRY                -573.54 ***         -25.15 **          -16.64 ***        -23.00 ***       
+                       (50.42)             (7.78)             (4.03)            (1.63)          
+ISOQAT                -841.73 ***         -56.83 ***         -31.74 ***        -29.49 ***       
+                       (77.65)            (11.86)             (6.15)            (2.49)          
+ISOROU                -560.90 ***         -20.67 **          -20.48 ***        -31.31 ***       
+                       (46.05)             (6.66)             (3.45)            (1.39)          
+ISORUS                -444.20 ***           5.16              -8.15            -27.87 ***       
+                       (57.55)             (8.42)             (4.36)            (1.76)          
+ISORWA                -382.06 ***           0.53              -3.75            -17.17 ***       
+                       (32.77)             (5.19)             (2.69)            (1.09)          
+ISOSAU                -884.50 ***         -78.04 ***         -47.35 ***        -36.18 ***       
+                       (56.66)             (8.94)             (4.63)            (1.87)          
+ISOSDN                -591.78 ***         -38.59 ***         -24.00 ***        -17.71 ***       
+                       (56.23)             (9.04)             (4.68)            (1.89)          
+ISOSEN                -610.09 ***         -32.94 ***         -24.42 ***        -17.77 ***       
+                       (53.01)             (8.51)             (4.41)            (1.78)          
+ISOSGP                -451.78 ***          22.90              10.34            -16.62 ***       
+                      (100.02)            (15.11)             (7.83)            (3.17)          
+ISOSLB                -903.80 ***         -97.60 ***         -59.10 ***        -41.24 ***       
+                       (49.46)             (7.89)             (4.09)            (1.65)          
+ISOSLE                 511.91 ***          55.76 ***          37.16 ***         -7.35 ***       
+                       (51.53)             (8.27)             (4.28)            (1.73)          
+ISOSLV                -816.72 ***         -57.12 ***         -35.11 ***        -31.33 ***       
+                       (50.66)             (7.99)             (4.14)            (1.67)          
+ISOSOM                -128.05 *            31.72 ***          14.40 **          -6.67 ***       
+                       (55.01)             (8.63)             (4.47)            (1.81)          
+ISOSRB                -549.45 ***         -23.61 ***         -24.00 ***        -32.75 ***       
+                       (49.66)             (7.16)             (3.71)            (1.50)          
+ISOSSD                 -91.27             -43.88 ***         -26.93 ***        -13.34 ***       
+                       (57.43)             (9.25)             (4.79)            (1.94)          
+ISOSTP                -759.69 ***         -43.36 ***         -29.15 ***        -28.78 ***       
+                       (45.56)             (7.23)             (3.75)            (1.52)          
+ISOSUR                -700.24 ***         -56.74 ***         -32.64 ***        -26.96 ***       
+                       (57.98)             (9.11)             (4.72)            (1.91)          
+ISOSVK                -628.25 ***         -43.74 ***         -35.04 ***        -37.79 ***       
+                       (54.82)             (7.95)             (4.12)            (1.67)          
+ISOSVN                -557.26 ***         -30.11 ***         -28.42 ***        -35.72 ***       
+                       (54.45)             (7.90)             (4.09)            (1.65)          
+ISOSWE                -604.42 ***         -39.41 ***         -34.42 ***        -38.73 ***       
+                       (62.12)             (9.10)             (4.72)            (1.91)          
+ISOSWZ                -484.32 ***         -20.96 ***         -17.35 ***        -27.82 ***       
+                       (38.67)             (6.04)             (3.13)            (1.27)          
+ISOSYC                -865.77 ***         -88.46 ***         -54.56 ***        -38.70 ***       
+                       (62.00)             (9.71)             (5.03)            (2.03)          
+ISOSYR                -625.37 ***          -7.94             -11.25 **         -24.52 ***       
+                       (44.68)             (6.71)             (3.48)            (1.41)          
+ISOTCD                  61.03               6.09              -7.73            -16.97 ***       
+                       (53.65)             (8.61)             (4.46)            (1.80)          
+ISOTGO                -524.22 ***          -7.45              -6.34            -16.01 ***       
+                       (53.08)             (8.50)             (4.41)            (1.78)          
+ISOTHA                -864.43 ***         -75.36 ***         -45.39 ***        -34.27 ***       
+                       (60.08)             (9.43)             (4.89)            (1.98)          
+ISOTJK                -581.97 ***           6.99               3.54            -19.87 ***       
+                       (43.17)             (6.25)             (3.24)            (1.31)          
+ISOTKM                -773.73 ***         -29.58 ***         -15.34 ***        -21.42 ***       
+                       (41.40)             (6.11)             (3.17)            (1.28)          
+ISOTLS                -736.40 ***         -53.87 ***         -24.15 ***        -25.20 ***       
+                       (46.55)             (7.45)             (3.86)            (1.56)          
+ISOTON                -910.79 ***        -110.48 ***         -71.28 ***        -49.38 ***       
+                       (57.04)             (8.90)             (4.61)            (1.86)          
+ISOTTO                -683.68 ***         -46.66 ***         -26.11 ***        -24.68 ***       
+                       (65.18)            (10.06)             (5.21)            (2.11)          
+ISOTUN                -688.00 ***         -26.95 ***         -17.69 ***        -21.51 ***       
+                       (44.21)             (6.69)             (3.47)            (1.40)          
+ISOTUR                -727.48 ***         -36.39 ***         -25.75 ***        -30.01 ***       
+                       (42.49)             (6.26)             (3.24)            (1.31)          
+ISOTZA                -295.59 ***         -22.76 ***         -18.90 ***        -23.48 ***       
+                       (40.79)             (6.51)             (3.37)            (1.36)          
+ISOUGA                -490.41 ***         -16.00 *           -17.16 ***        -24.93 ***       
+                       (42.91)             (6.81)             (3.53)            (1.43)          
+ISOUKR                -357.09 ***          23.08 **            4.22            -21.30 ***       
+                       (58.23)             (8.38)             (4.34)            (1.75)          
+ISOURY                -573.19 ***          -0.78              -7.35            -24.44 ***       
+                       (50.78)             (7.54)             (3.91)            (1.58)          
+ISOUSA                -476.24 ***          -5.05             -10.70            -27.57 ***       
+                       (72.40)            (10.54)             (5.46)            (2.21)          
+ISOUZB                -623.43 ***         -23.72 ***         -16.81 ***        -25.95 ***       
+                       (46.80)             (6.78)             (3.51)            (1.42)          
+ISOVCT                -918.83 ***         -91.83 ***         -54.06 ***        -36.10 ***       
+                       (55.78)             (8.84)             (4.58)            (1.85)          
+ISOVEN                -788.53 ***         -71.70 ***         -44.27 ***        -33.81 ***       
+                       (52.50)             (8.27)             (4.28)            (1.73)          
+ISOVNM                -676.40 ***         -28.73 **          -18.47 ***        -23.82 ***       
+                       (60.00)             (9.28)             (4.81)            (1.94)          
+ISOVUT                -955.02 ***         -97.13 ***         -59.44 ***        -41.84 ***       
+                       (49.14)             (7.76)             (4.02)            (1.63)          
+ISOWSM                -853.63 ***         -92.49 ***         -58.61 ***        -43.67 ***       
+                       (62.60)             (9.87)             (5.11)            (2.07)          
+ISOYEM                -629.46 ***           2.81               3.94             -8.74 ***       
+                       (43.97)             (6.90)             (3.58)            (1.45)          
+ISOZAF                -498.64 ***          24.27 ***           9.53 **         -21.67 ***       
+                       (45.48)             (6.78)             (3.51)            (1.42)          
+ISOZMB                -464.33 ***          15.33 *             0.50            -17.97 ***       
+                       (43.49)             (6.78)             (3.51)            (1.42)          
+ISOZWE                -206.48 ***           6.82              -6.06            -16.22 ***       
+                       (42.06)             (6.48)             (3.36)            (1.36)          
+as.factor(Year)2001     -4.01              -1.42              -0.87             -0.40           
+                        (6.24)             (1.04)             (0.54)            (0.22)          
+as.factor(Year)2002     -6.52              -3.32 **           -1.99 ***         -0.84 ***       
+                        (6.33)             (1.05)             (0.54)            (0.22)          
+as.factor(Year)2003    -10.32              -4.70 ***          -2.82 ***         -1.22 ***       
+                        (6.45)             (1.06)             (0.55)            (0.22)          
+as.factor(Year)2004    -18.63 **           -6.52 ***          -3.93 ***         -1.69 ***       
+                        (6.65)             (1.09)             (0.56)            (0.23)          
+as.factor(Year)2005    -27.48 ***          -8.37 ***          -5.02 ***         -2.10 ***       
+                        (6.90)             (1.12)             (0.58)            (0.23)          
+as.factor(Year)2006    -35.48 ***         -10.18 ***          -6.05 ***         -2.49 ***       
+                        (7.21)             (1.16)             (0.60)            (0.24)          
+as.factor(Year)2007    -42.98 ***         -12.22 ***          -7.16 ***         -2.96 ***       
+                        (7.62)             (1.22)             (0.63)            (0.26)          
+as.factor(Year)2008    -47.40 ***         -13.50 ***          -7.90 ***         -3.34 ***       
+                        (7.99)             (1.27)             (0.66)            (0.27)          
+as.factor(Year)2009    -47.03 ***         -13.96 ***          -8.18 ***         -3.51 ***       
+                        (8.18)             (1.29)             (0.67)            (0.27)          
+as.factor(Year)2010    -50.52 ***         -14.74 ***          -8.74 ***         -3.85 ***       
+                        (8.66)             (1.35)             (0.70)            (0.28)          
+as.factor(Year)2011    -53.00 ***         -16.47 ***          -9.61 ***         -4.20 ***       
+                        (9.09)             (1.41)             (0.73)            (0.30)          
+as.factor(Year)2012    -52.65 ***         -17.03 ***         -10.00 ***         -4.44 ***       
+                        (9.45)             (1.46)             (0.75)            (0.31)          
+as.factor(Year)2013    -52.35 ***         -17.61 ***         -10.39 ***         -4.70 ***       
+                        (9.89)             (1.52)             (0.78)            (0.32)          
+as.factor(Year)2014    -52.85 ***         -18.49 ***         -10.97 ***         -5.03 ***       
+                       (10.34)             (1.58)             (0.82)            (0.33)          
+as.factor(Year)2015    -48.89 ***         -18.07 ***         -10.88 ***         -5.14 ***       
+                       (10.68)             (1.62)             (0.84)            (0.34)          
+as.factor(Year)2016    -49.98 ***         -18.66 ***         -11.26 ***         -5.36 ***       
+                       (11.15)             (1.69)             (0.87)            (0.35)          
+as.factor(Year)2017    -51.42 ***         -19.24 ***         -11.71 ***         -5.61 ***       
+                       (11.61)             (1.75)             (0.90)            (0.37)          
+ISOAND                                    -20.94 *           -21.02 ***        -32.51 ***       
+                                           (8.66)             (4.48)            (1.81)          
+ISODMA                                    -86.43 ***         -53.47 ***        -32.82 ***       
+                                           (9.87)             (5.11)            (2.07)          
+ISOMHL                                    -65.64 ***         -40.47 ***        -33.45 ***       
+                                           (7.68)             (3.98)            (1.61)          
+as.factor(Year)2018                       -19.76 ***         -12.11 ***         -5.91 ***       
+                                           (1.82)             (0.94)            (0.38)          
+as.factor(Year)2019                       -19.73 ***         -12.22 ***         -6.10 ***       
+                                           (1.88)             (0.98)            (0.39)          
+------------------------------------------------------------------------------------------------
+R^2                      0.96               0.95               0.96              0.98           
+Adj. R^2                 0.96               0.94               0.96              0.97           
+Num. obs.             3223               3618               3618              3618              
+================================================================================================
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="log-transformed-gdp" class="level2">
+<h2 class="anchored" data-anchor-id="log-transformed-gdp">log transformed GDP</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>final_data<span class="sc">$</span>loggdp1000 <span class="ot">&lt;-</span> <span class="fu">log</span>(final_data<span class="sc">$</span>gdp1000)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="st">" ~ armed_conflict + loggdp1000 + OECD + pctpopdens + urban + agedep + male_edu + temp + rainfall1000 + Earthquake + Drought"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>matmorplmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(<span class="fu">update.formula</span>(preds, matMor <span class="sc">~</span> .),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>, <span class="st">"Year"</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">effect =</span> <span class="st">"twoways"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> final_data)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>un5morplmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(<span class="fu">update.formula</span>(preds, under5Mor <span class="sc">~</span> .),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>, <span class="st">"Year"</span>),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">effect =</span> <span class="st">"twoways"</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> final_data)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>infmorplmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(<span class="fu">update.formula</span>(preds, infMor <span class="sc">~</span> .),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>, <span class="st">"Year"</span>),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">effect =</span> <span class="st">"twoways"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> final_data)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>neomorplmmod <span class="ot">&lt;-</span> <span class="fu">plm</span>(<span class="fu">update.formula</span>(preds, neoMor <span class="sc">~</span> .),</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ISO"</span>, <span class="st">"Year"</span>),</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">effect =</span> <span class="st">"twoways"</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> final_data)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co">#screenreg(list(matmorplmmod, un5morplmmod, infmorplmmod, neomorplmmod), custom.model.names = c("Maternal Mortality", "Under-5 Mortality", "Infant Mortality", "Neonatal Mortality"))</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">htmlreg</span>(<span class="fu">list</span>(matmorplmmod, un5morplmmod, infmorplmmod, neomorplmmod), <span class="at">file=</span><span class="st">"model_table.html"</span>, <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"Maternal Mortality"</span>, <span class="st">"Under-5 Mortality"</span>, <span class="st">"Infant Mortality"</span>, <span class="st">"Neonatal Mortality"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><embed src="model_table.html" width="800" height="1000"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

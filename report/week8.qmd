@@ -1,0 +1,131 @@
+---
+title: "week8"
+format: html
+editor: visual
+options:
+  warning: false
+  message: false
+---
+
+```{r echo=FALSE, output=FALSE}
+library(tidyverse)
+library(here)
+library(texreg)
+library(multgee)
+library(plm)
+```
+
+```{r echo=FALSE}
+final_data <- read.csv(here("data/analytical", "final_data.csv"), header = TRUE)
+```
+
+```{r}
+data <- final_data %>% filter(country_name %in% c("Canada","United States", "Japan"))
+
+mod1 <- lm(matMor~ISO+Earthquake, data=data)
+
+mod2 <- lm(matMor~ -1+ISO+Earthquake, data=data)
+
+screenreg(list(mod1, mod2), custom.model.names = c("Model 1", "Model 2"))
+```
+
+```{r}
+final_data$pctpopdens <- final_data$popdens/100
+
+lmmod <- lm(matMor ~ -1 + armed_conflict + gdp1000 + OECD + pctpopdens + urban +
+              agedep + male_edu + temp + rainfall1000 + Earthquake + Drought +
+              ISO, 
+            data = final_data)
+
+plmmod <- plm(matMor ~ armed_conflict + gdp1000 + OECD + pctpopdens + urban +
+                agedep + male_edu + temp + rainfall1000 + Earthquake + Drought,
+              index = c("ISO"), model = "within", data = final_data)
+
+screenreg(list(lmmod, plmmod), custom.model.names = c("LM", "PLM"))
+#year 2000 as dummy variable (base level)???
+```
+## Adding year as a factor
+
+```{r}
+lmmod <- lm(matMor ~ -1 + armed_conflict + gdp1000 + OECD + pctpopdens + urban +
+              agedep + male_edu + temp + rainfall1000 + Earthquake + Drought + ISO + 
+              as.factor(Year), data = final_data)
+
+plmmod <- plm(matMor ~ armed_conflict + gdp1000 + OECD + pctpopdens + urban + 
+                  agedep + male_edu + temp + rainfall1000 + Earthquake + Drought,
+              index = c("ISO", "Year"),
+              effect = "twoways",
+              model = "within",
+              data = final_data)
+
+screenreg(list(lmmod, plmmod), custom.model.names = c("LM", "PLM"))
+```
+
+Interpretation: (when we include year as a factor) for every increase in gdp by one unit, maternal mortality increase by 2.98.
+
+### for all the predictors
+```{r}
+preds <- as.formula(" ~ armed_conflict + gdp1000 + OECD + pctpopdens + urban + 
+                  agedep + male_edu + temp + rainfall1000 + Earthquake + Drought + 
+                  ISO + as.factor(Year)")
+
+matmormod <- lm(update.formula(preds, matMor ~ .), data = final_data)
+un5mormod <- lm(update.formula(preds, under5Mor ~ .), data = final_data)
+infmormod <- lm(update.formula(preds, infMor ~ .), data = final_data)
+neomormod <- lm(update.formula(preds, neoMor ~ .), data = final_data)
+
+screenreg(list(matmormod, un5mormod, infmormod, neomormod), custom.model.names = c("Maternal Mortality", "Under-5 Mortality", "Infant Mortality", "Neonatal Mortality"))
+```
+
+## log transformed GDP
+```{r echo=FALSE, output=FALSE}
+final_data$loggdp1000 <- log(final_data$gdp1000)
+
+preds <- as.formula(" ~ armed_conflict + loggdp1000 + OECD + pctpopdens + urban + agedep + male_edu + temp + rainfall1000 + Earthquake + Drought + ISO + as.factor(Year)")
+
+matmormod <- lm(update.formula(preds, matMor ~ .), data = final_data)
+un5mormod <- lm(update.formula(preds, under5Mor ~ .), data = final_data)
+infmormod <- lm(update.formula(preds, infMor ~ .), data = final_data)
+neomormod <- lm(update.formula(preds, neoMor ~ .), data = final_data)
+
+#screenreg(list(matmormod, un5mormod, infmormod, neomormod), custom.model.names = c("Maternal Mortality", "Under-5 Mortality", "Infant Mortality", "Neonatal Mortality"))
+```
+
+```{r output=FALSE, message=FALSE}
+final_data$loggdp1000 <- log(final_data$gdp1000)
+
+preds <- as.formula(" ~ armed_conflict + loggdp1000 + OECD + pctpopdens + urban + agedep + male_edu + temp + rainfall1000 + Earthquake + Drought")
+
+matmorplmmod <- plm(update.formula(preds, matMor ~ .),
+              index = c("ISO", "Year"),
+              effect = "twoways",
+              model = "within",
+              data = final_data)
+
+un5morplmmod <- plm(update.formula(preds, under5Mor ~ .),
+              index = c("ISO", "Year"),
+              effect = "twoways",
+              model = "within",
+              data = final_data)
+
+infmorplmmod <- plm(update.formula(preds, infMor ~ .),
+              index = c("ISO", "Year"),
+              effect = "twoways",
+              model = "within",
+              data = final_data)
+
+neomorplmmod <- plm(update.formula(preds, neoMor ~ .),
+              index = c("ISO", "Year"),
+              effect = "twoways",
+              model = "within",
+              data = final_data)
+
+#screenreg(list(matmorplmmod, un5morplmmod, infmorplmmod, neomorplmmod), custom.model.names = c("Maternal Mortality", "Under-5 Mortality", "Infant Mortality", "Neonatal Mortality"))
+
+htmlreg(list(matmorplmmod, un5morplmmod, infmorplmmod, neomorplmmod), file="model_table.html", custom.model.names = c("Maternal Mortality", "Under-5 Mortality", "Infant Mortality", "Neonatal Mortality"))
+```
+
+```{r echo=FALSE, out.width = "800px", out.height="1000px"}
+# display "model_table.html"
+knitr::include_graphics("model_table.html")
+```
