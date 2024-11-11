@@ -1,5 +1,5 @@
 ---
-title: "week8"
+title: "linear_regression"
 format: html
 editor: visual
 options:
