@@ -30,6 +30,7 @@ glimpse(data_2000)
 ```
 
 ## Table 1 for armed conflict paper
+
 ```{R}
 data_2000$armed_conflict <- 
   factor(data_2000$armed_conflict, levels=c(0,1),
@@ -67,8 +68,9 @@ table1( ~ gdp1000_group + OECD + urban | armed_conflict, data = data_2000,
 ```
 
 ## Descriptive figure
-Write a Quarto script that creates a figure that shows the trend in maternal mortality
-for countries that had an increase from 2000 to 2017.
+
+Write a Quarto script that creates a figure that shows the trend in maternal mortality for countries that had an increase from 2000 to 2017.
+
 ```{r}
 mat_data <- final_data %>% group_by(ISO) %>%
   filter(Year %in% c(2000,2017)) %>% select(ISO, Year, matMor)
